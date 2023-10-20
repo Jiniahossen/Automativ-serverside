@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster1.tbo7caf.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://AutomotiveServer:jwyKlsw8vN4KV3AT@cluster1.tbo7caf.mongodb.net/?retryWrites=true&w=majority`;
 
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -28,9 +28,22 @@ async function run() {
   
     await client.connect();
 
-    // app.post('/products',async(req,res)=>{
+    const database = client.db("automotiveDB");
+   const userCollection= database.collection('product')
 
-    // })
+    app.post('/products',async(req,res)=>{
+      const product=req.body;
+      const result = await userCollection.insertOne(product);
+      res.send(result);
+      console.log(result)
+
+    })
+
+
+    app.get('/products',async(req,res)=>{
+      const result=await userCollection.find().toArray();
+      res.send(result)
+    })
 
 
 
